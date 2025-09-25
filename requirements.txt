@@ -5,7 +5,7 @@ matplotlib
 streamlit
 langchain-groq
 langchain_community
-PyPDF
+PyPDF2
 sentence-transformers
 python-dotenv
 langchain-unstructured
@@ -17,3 +17,4 @@ pymysql
 sqlalchemy
 google-genai
 pdf2image
+PyMuPDF

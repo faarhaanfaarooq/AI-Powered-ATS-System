@@ -1,7 +1,9 @@
 services:
   - type: web
-    name: ats-resume-expert
+    name: ai-powered-ats-system
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "streamlit run app.py --server.port=$PORT --server.address=0.0.0.0"
-    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0 --server.enableCORS false
+    envVars:
+      - key: PORT
+        value: "10000"

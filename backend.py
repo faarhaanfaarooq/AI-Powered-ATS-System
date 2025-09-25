@@ -4,6 +4,7 @@ from PIL import Image
 from google import genai
 from google.genai import types
 import pdf2image
+import fitz
 from dotenv import load_dotenv
 import base64
 
@@ -29,25 +30,29 @@ def get_gemini_response(input, pdf_content, prompt):
     return response.text
 
 
+
 def input_pdf_setup(uploaded_file):
-    if uploaded_file is not None:
-        # Converting pdf -> img
-        images = pdf2image.convert_from_bytes(
-            uploaded_file.read(),
-            poppler_path=r"C:\Users\Farhan\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Release-25.07.0-0\poppler-25.07.0\Library\bin"
-        )
+    if uploaded_file is None:
+        raise FileNotFoundError("No File Uploaded")
 
-        pdf_parts = []
+    pdf_parts = []
 
-        # Converting into bytes
-        for page in images:
-            img_byte_arr = io.BytesIO()
-            page.save(img_byte_arr, format='JPEG')
-            img_bytes = img_byte_arr.getvalue()
+    try:
+        doc = fitz.open(stream=uploaded_file.read(), filetype="pdf")
+
+        for page in doc:
+            page_text = page.get_text().encode("utf-8")  # convert text to bytes
 
             pdf_parts.append(
-                types.Part.from_bytes(mime_type="image/jpeg", data=img_bytes)
+                types.Part.from_bytes(
+                    mime_type="text/plain",
+                    data=page_text
+                )
             )
-        return pdf_parts
-    else:
-        raise FileNotFoundError("No File Uploaded")
+
+        doc.close()
+    except Exception as e:
+        print("Error reading PDF:", e)
+        raise e
+
+    return pdf_parts
