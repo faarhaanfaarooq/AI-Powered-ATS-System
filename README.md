@@ -1,8 +1,6 @@
 # AI-Powered-ATS-System
 
-<video autoplay loop muted playsinline width="800">
-  <source src="review.mp4" type="video/mp4">
-</video>
+https://github.com/user-attachments/assets/0411ffb2-087a-4d02-88e3-c7c3287f0741
 
 # Overview
 
